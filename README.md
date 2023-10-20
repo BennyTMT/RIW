@@ -1,5 +1,3 @@
-# RIW
-
 ## Setting Up and Running the Experiment
 
 ### 1. Environment Setup
