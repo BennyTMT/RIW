@@ -17,22 +17,21 @@ import io , string
 import time 
 
 data_type = 'igc'
-# torch.cuda.set_device(int(sys.argv[1]))
 
 if data_type == 'igc':
-    DATABASE     = '/p/selfdrivingpj/diff_data/inPix2pix/data/clip-filtered-dataset/water_edit/imagic-alphas-l1/'
+    DATABASE     = 'DIR/imagic-l1/'
 if data_type == 'ipx':
-    DATABASE     = '/p/selfdrivingpj/diff_data/inPix2pix/data/clip-filtered-dataset/water_edit/shard-alphas-l1/'
+    DATABASE     = 'DIR/ipx-l1/'
 
 if not os.path.exists(DATABASE): os.makedirs(DATABASE)
 # 00-04 
-TASKDIRS = ['/p/selfdrivingpj/diff_data/inPix2pix/data/clip-filtered-dataset/shard-0{}/'.format(i) for i in range(1,4)] 
+TASKDIRS = ['DIR/shard-0{}/'.format(i) for i in range(1,4)] 
 
 ExceptionContent =''
 sys.path.append("./stable_diffusion")
 
 def load_encoder_from_config( verbose=False):
-    config_path = '/u/wtd3gz/instruct-pix2pix/configs/v1-inference-attack.yaml'
+    config_path = 'DIR/v1-inference-attack.yaml'
     config = OmegaConf.load(config_path)
     
     ckpt = 'checkpoints/sd-v1-4.ckpt'

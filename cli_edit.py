@@ -170,7 +170,6 @@ def run_pipline():
             if not os.path.exists(os.path.join(SAVEPATH,file_name+'/{}/'.format(data_type))): 
                 continue 
             if not os.path.exists(os.path.join(SAVEPATH,file_name+'/water_{}.txt'.format(data_type))) :
-                print('water不存在')
                 continue
             if not os.path.exists(os.path.join(save_edit_path, 'ipx_{}'.format(data_type))): os.makedirs(os.path.join(save_edit_path, 'ipx_{}'.format(data_type)))
             else :   continue 
@@ -189,30 +188,10 @@ def run_pipline():
                 target_image = (2.0*  (torch.tensor(np.array(target_image)).float()) /255.0 ) -1 
                 target_image = rearrange(target_image, "h w c -> 1 c h w").to(encoder_model.device)
                 edit_image_with_prompt(edit_model,args,target_image,null_token ,model_wrap,model_wrap_cfg,seed, os.path.join(save_edit_path, 'ipx_{}/{}.jpg'.format(data_type,alpha)))
-                
+
         if not isThereTask : 
             print('There is not task, sleeping 3 mins...')
             time.sleep(60*3)
             
 if __name__ == '__main__':
     run_pipline()
-    
-'''
-    
-    scp -r wtd3gz@portal.cs.virginia.edu:/p/selfdrivingpj/diff_data/inPix2pix/data/clip-filtered-dataset/shard-alphas/ .
-    
-    scp -r wtd3gz@portal.cs.virginia.edu:/p/selfdrivingpj/diff_data/inPix2pix/data/clip-filtered-dataset/shard-alphas-l1/0304850/ . 
-    
-    conda activate ip2p ; 
-    conda activate ip2p ; python3 scale_2_edit_ipx.py  --cuda 0 
-    conda activate ip2p ; python3 scale_2_edit_ipx.py  --cuda 1
-    conda activate ip2p ; python3 scale_2_edit_ipx.py  --cuda 2 
-    conda activate ip2p ; python3 scale_2_edit_ipx.py  --cuda 3 
-    conda activate ip2p ; python3 scale_2_edit_ipx.py  --cuda 4
-    
-    scp -r wtd3gz@portal.cs.virginia.edu:/p/selfdrivingpj/diff_data/inPix2pix/data/clip-filtered-dataset/shard-alphas-l1/0258143/ipx_alphaPlus/ . 
-    scp -r wtd3gz@portal.cs.virginia.edu:/p/selfdrivingpj/diff_data/inPix2pix/data/clip-filtered-dataset/shard-alphas-l1/0136178/ . 
-   
-    ls /p/selfdrivingpj/diff_data/inPix2pix/data/clip-filtered-dataset/shard-alphas-l1/*/imagic 
-    scp -r wtd3gz@portal.cs.virginia.edu:/p/selfdrivingpj/diff_data/inPix2pix/data/clip-filtered-dataset/shard-alphas-l1/0262176/  . 
-'''
