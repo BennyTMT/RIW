@@ -5,6 +5,7 @@ from PIL import Image
 import lpips,clip
 from torchvision.transforms import Compose, Resize, CenterCrop, ToTensor, Normalize,InterpolationMode
 
+
 class random_Injector():
     def __init__(self, model, eps=8/255, alpha=2/255, steps=500, random_start=False, save_name ='text'):
         super(random_Injector, self).__init__()
@@ -62,6 +63,7 @@ class random_Injector():
             iwm_images = torch.clamp(origin_imgs + delta, min=low_bound, max=upp_bound).detach()
             
             if i%20 == 0 : print(i , cost  )
+            # if i%100 == 0 : self.image_save(iwm_images.clone() , origin_imgs.clone() , str(i) , need_denormalize= False ) 
             if i==250 : return  iwm_images.clone()
                 
     def check_loaded_encoder(self,  adv_image_features, tar_image_features , store =  True ):
@@ -141,7 +143,7 @@ class target_Injector():
         >>> adv_images = attack(images, labels)
 
     """
-    def __init__(self, model, eps=12/255, alpha=2/255, steps=401, random_start=False, clip_loss = False,device=''):
+    def __init__(self, model, eps=16/255, alpha=2/255, steps=1001, random_start=False, clip_loss = False,device=''):
         super(target_Injector, self).__init__()
         self.clip_loss = False
         self.model = model
@@ -166,12 +168,15 @@ class target_Injector():
                 ])
 
     def run(self, origin_imgs, x_prime = None , water= None  ,  inject_type ='' , 
-            noised_degree_latent=0 ,  decoder_loss = True ,  encode_loss_scale = 1.0 ):
-        
+            noised_degree_latent=0 ,  decoder_loss = False ,  encode_loss_scale = 2.0 ):
+
         self.decoder_loss = decoder_loss 
+        self.origin_imgs  = origin_imgs 
+        
         self.decoder_x_prime = None 
         self.encode_loss_scale = encode_loss_scale 
         self.noised_degree = noised_degree_latent
+        
         
         if x_prime != None :  
             tar_images = x_prime.clone().detach().to(self.device) 
@@ -191,29 +196,11 @@ class target_Injector():
             upp_bound = float(torch.max( origin_imgs.clone().detach().to(self.device) ))
         else:
             low_bound , upp_bound = -1. , 1.  
-        
-        lowest_cost = 401 
-        return_image = None 
-        
-        if inject_type == 'pixel':
-                # x' = a x water + x 
-                self.tar_image_features = self.model.encode_first_stage(tar_images).mode()
-                if self.decoder_loss :  
-                    embedding = self.tar_image_features.clone()
-                    embedding = (embedding - embedding.mean()) / embedding.std()
-                    self.decoder_x_prime = self.model.decode_first_stage(embedding)
 
-        if inject_type == 'noised':
-            # E(x') + a x Noise 
-            tar_image_features = self.model.encode_first_stage(tar_images).mode()
-            tar_image_features += torch.rand_like(tar_image_features) * self.noised_degree
-            
-        if inject_type == 'latent':
-            # E(x_0) + a x E(water)
-            e_origin= self.model.encode_first_stage(origin_imgs).mode()
-            tar_image_features = (1-self.noised_degree) * e_origin + self.noised_degree * e_water
-            # tar_image_features =  e_origin + self.noised_degree * e_water
-                
+        lowest_cost = 1000 
+        return_image = None 
+        self.tar_image_features = self.model.encode_first_stage(tar_images).mode()
+             
         for i in range(1, self.steps +1):
             adv_images.requires_grad = True
             adv_image_features = self.model.encode_first_stage(adv_images).mode()
@@ -258,16 +245,17 @@ class target_Injector():
         c3 = 1
         l1 = torch.abs(self.lpips(adv_image,ori_image) )
         l2 = torch.mean(torch.abs(adv_encode - tar_encode ))
+        # l2 = self.l2_loss(adv_encode,tar_encode )
         
         if self.decoder_loss  :
             adv_encode = (adv_encode-adv_encode.mean())/adv_encode.std()
-            loss_decoder = self.l2_loss( self.decoder_x_prime,  self.model.decode_first_stage(adv_encode))
-                
+            loss_decoder = self.l2_loss( self.origin_imgs,  self.model.decode_first_stage(adv_encode))
+            
         if self.clip_loss :    
             l3 = self.clip_distance(  ori_image ,adv_image )
             return  c1* l1 + c2 * l2 + c3* l3
         if self.decoder_loss :
-            return  c1* l1 + c2 * l2 + c3 * loss_decoder 
+            return  c1* l1 + c2 * l2 + loss_decoder 
         return  c1* l1 + c2 * l2 
         
     def clip_distance(self , x_0 , x  ):
