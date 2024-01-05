@@ -18,7 +18,7 @@ import time
 sys.path.append("./stable_diffusion")
 
 def load_encoder_from_config( verbose=False):
-    config_path = '/u/wtd3gz/instruct-pix2pix/configs/v1-inference-attack.yaml'
+    config_path = '/YOURDIR/instruct-pix2pix/configs/v1-inference-attack.yaml'
     config = OmegaConf.load(config_path)
     
     ckpt = 'checkpoints/sd-v1-4.ckpt'
@@ -49,7 +49,7 @@ def pixel_water(baseImg_path=None  , image = None, waters=None  , random_water =
     else :
         text = waters[water_idx].lower()
         
-    font = ImageFont.truetype('/u/wtd3gz/watermark/src/chinese.simfang.ttf', 70)
+    font = ImageFont.truetype('/YOURDIR/watermark/src/chinese.simfang.ttf', 70)
     if image == None : image = Image.open(baseImg_path)
     
     # 添加背景
@@ -104,7 +104,7 @@ def run_demo(injector = 'pgd'):
     water_idx = random.randint(0, len(waters)-1)
 
     alpha = 0.5 
-    file_path = '/u/wtd3gz/instruct-pix2pix/imgs/example.jpg'
+    file_path = '/YOURDIR/instruct-pix2pix/imgs/example.jpg'
     x_prime  , water_text  =  pixel_water(baseImg_path = file_path , waters= waters ,  random_water = False,  alpha = alpha ,  water_idx=water_idx )
     x_prime =  rearrange(x_prime, "h w c -> 1 c h w").to(encoder_model.device)
     # (0,255) --> (-1,1)

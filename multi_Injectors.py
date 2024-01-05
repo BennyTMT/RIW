@@ -99,7 +99,7 @@ class random_Injector():
         return  self.l2_loss(orig_image_features ,targ_image_features )
 
     def image_save(self, image_tensor, origin_tensor , name=-1 , need_denormalize = False):
-        IMGPATH = '/u/wtd3gz/instruct-pix2pix/imgs/wm/'+ str(self.std_dev) +'/'
+        IMGPATH = '/YOURDIR/instruct-pix2pix/imgs/wm/'+ str(self.std_dev) +'/'
         
         if not os.path.exists(IMGPATH ): os.makedirs(IMGPATH )
         
@@ -123,26 +123,6 @@ class random_Injector():
         image_water.save(IMGPATH+str(name)+"_water_img.png")
 
 class PGD_Injector():
-    r"""
-    Distance Measure : Linf
-
-    Arguments:
-        model (nn.Module): model to attack.
-        eps (float): maximum perturbation. (Default: 8/255)
-        alpha (float): step size. (Default: 2/255)
-        steps (int): number of steps. (Default: 10)
-        random_start (bool): using random initialization of delta. (Default: True)
-
-    Shape:
-        - images: :math:`(N, C, H, W)` where `N = number of batches`, `C = number of channels`,        `H = height` and `W = width`. It must have a range [0, 1].
-        - labels: :math:`(N)` where each value :math:`y_i` is :math:`0 \leq y_i \leq` `number of labels`.
-        - output: :math:`(N, C, H, W)`.
-
-    Examples::
-        >>> attack = torchattacks.PGD(model, eps=8/255, alpha=1/255, steps=10, random_start=True)
-        >>> adv_images = attack(images, labels)
-        
-    """
     def __init__(self, model, eps=16/255, alpha=2/255, steps=1010, random_start=False, clip_loss = False,device=''):
         super(PGD_Injector, self).__init__()
         self.clip_loss = False
@@ -270,7 +250,7 @@ class PGD_Injector():
     def image_save(self, image_tensor , step , inject_type , noised_degree = 0 ): 
         image_tensor = image_tensor.cpu().detach()
 
-        IMGPATH = '/u/wtd3gz/instruct-pix2pix/imgs/injection/{}/'.format(inject_type)
+        IMGPATH = '/YOURDIR/instruct-pix2pix/imgs/injection/{}/'.format(inject_type)
         if not os.path.exists(IMGPATH): os.makedirs(IMGPATH)
         
         # image_tensor = (0,1)
@@ -515,7 +495,7 @@ class BIM_Injector():
     def image_save(self, image_tensor , step , inject_type , noised_degree = 0 ): 
         image_tensor = image_tensor.cpu().detach()
 
-        IMGPATH = '/u/wtd3gz/instruct-pix2pix/imgs/injection/{}/'.format(inject_type)
+        IMGPATH = '/YOURDIR/instruct-pix2pix/imgs/injection/{}/'.format(inject_type)
         if not os.path.exists(IMGPATH): os.makedirs(IMGPATH)
         
         # image_tensor = (0,1)
