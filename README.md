@@ -1,6 +1,7 @@
 # RIW
 
 ## Setting Up and Running the Experiment
+If you want to quickly try out our RIW method after setting up the environment, I suggest you can run 'python run.py'.
 
 ### 1. Environment Setup
 To run this experiment, it's highly recommended to set up the initial environment following the [instruct-pix2pix GitHub project](https://github.com/YOUR_GITHUB_LINK/instruct-pix2pix). This ensures compatibility and smooth operation.
