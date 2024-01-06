@@ -17,8 +17,9 @@ With everything in place, run the `prepare.py` script first. This script process
 ### 4. Image Editing
 For editing the images, use the `cli_edit.py` script. It provides tools and functions tailored for this purpose, allowing you to modify the images in the dataset according to the needs of the experiment.
 
+### RIW example
 An example regarding RIW: when you increase the alpha parameter or the encoder loss, the watermark will become visible in the edited image. For examples where the watermark remains invisible after editing, please refer to the paper.
-![example image](imgs/target.png)
+![example image](imgs/inject_wm.png)
 
 ---
 
