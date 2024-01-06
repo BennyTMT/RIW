@@ -19,7 +19,7 @@ For editing the images, use the `cli_edit.py` script. It provides tools and func
 
 ### RIW example
 An example regarding RIW: when you increase the alpha parameter or the encoder loss, the watermark will become visible in the edited image. For examples where the watermark remains invisible after editing, please refer to the paper.
-![example image](imgs/inject_wm.pdf)
+![example image](imgs/riw_visible_exm.jpg)
 
 ---
 
