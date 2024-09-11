@@ -24,6 +24,9 @@ An example regarding RIW: when you increase the alpha parameter or the encoder l
 ### 5. Watermark Extraction:  
 Due to different diffusion models used for generation or editing, the image distributions vary. Therefore, the extractor needs to be retrained with edited images. For the training process and model, please refer to [deep-text-recognition-benchmark.](https://github.com/timothybrooks/instruct-pix2pix)
 
+Below are some of our extraction results. For more details, please refer to the EVALUATION Section of the paper.
+![extraction results](imgs/extraction.png)
+
 ---
 
 **Note**: Before running any scripts, ensure that all the necessary dependencies are installed and your Python environment is correctly configured. If you encounter any issues, refer to the troubleshooting section or open an issue in this repository.
