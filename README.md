@@ -21,7 +21,7 @@ For editing the images, use the `cli_edit.py` script. It provides tools and func
 An example regarding RIW: when you increase the alpha parameter or the encoder loss, the watermark will become visible in the edited image. For examples where the watermark remains invisible after editing, please refer to the paper.
 ![example image](imgs/riw_visible_exm.png)
 
-### Watermark Extraction:  
+### 5. Watermark Extraction:  
 Due to different diffusion models used for generation or editing, the image distributions vary. Therefore, the extractor needs to be retrained with edited images. For the training process and model, please refer to [deep-text-recognition-benchmark.](https://github.com/timothybrooks/instruct-pix2pix)
 
 ---
