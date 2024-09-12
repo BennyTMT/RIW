@@ -22,7 +22,7 @@ An example regarding RIW: when you increase the alpha parameter or the encoder l
 ![example image](imgs/riw_visible_exm.png)
 
 ### 5. Watermark Extraction:  
-Due to different diffusion models used for generation or editing, the image distributions vary. Therefore, the extractor needs to be retrained with edited images, if you are using a different editor. For the training process and model, please refer to [deep-text-recognition-benchmark.](https://github.com/timothybrooks/instruct-pix2pix)
+Due to different diffusion models used for generation or editing, the image distributions vary. Therefore, the extractor needs to be retrained with edited images, if you are using a different editor. For the training process and model, please refer to [deep-text-recognition-benchmark.]([https://github.com/timothybrooks/instruct-pix2pix](https://github.com/clovaai/deep-text-recognition-benchmark))
 
 Below are some of our extraction results. For more details, please refer to the EVALUATION Section of the paper.
 ![extraction results](imgs/extraction.png)
